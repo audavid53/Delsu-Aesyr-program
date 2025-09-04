@@ -54,7 +54,7 @@ function CategoryCard({ title, imageUrl, isSelected, onClick, className }: Categ
 
         {/* Active Indicator */}
         {isSelected && (
-          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-primary-blue rounded-full animate-in fade-in-50 duration-300" />
+          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-primary-blue rounded-full transition-all duration-300" />
         )}
       </div>
     </button>
