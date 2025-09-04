@@ -122,7 +122,7 @@ export function CategoriesSection({ className, onCategoryChange }: CategoriesSec
     onCategoryChange?.(categoryId);
   };
 
-  const scrollContainer = React.useRef<HTMLDivElement>(null);
+  const scrollContainer = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
     if (scrollContainer.current) {
