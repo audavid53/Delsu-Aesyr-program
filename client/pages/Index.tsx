@@ -13,11 +13,8 @@ export default function Index() {
       <Header />
       
       {/* Main Content with Right Sidebar */}
-      <MainContent 
-        rightSidebar={<BalanceSidebar />}
-        className="bg-primary-grey"
-      >
-        <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
+      <MainContent rightSidebar={<BalanceSidebar />}>
+        <div className="space-y-6 lg:space-y-8">
           {/* Featured Auction Section */}
           <section>
             <FeaturedAuctionCard />
