@@ -32,7 +32,7 @@ export function MainContent({
 }: MainContentProps) {
   return (
     <div className={cn("flex-1 w-full", className)}>
-      <div className="px-4 sm:px-6 lg:px-8 pb-6">
+      <div className="rounded-3xl bg-primary-grey shadow-sm px-4 sm:px-6 lg:px-8 pb-6">
         <div className="flex w-full gap-4 sm:gap-6">
           {/* Center Content */}
           <main className="flex-1 min-w-0">
