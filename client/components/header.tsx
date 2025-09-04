@@ -28,7 +28,7 @@ export function Header({ className }: HeaderProps) {
           <button className="flex items-center gap-2 px-4 py-2.5 border border-[#888F94] rounded-3xl hover:border-gray-400 transition-colors min-h-[38px]">
             {/* Brand Icon */}
             <img
-              src="https://api.builder.io/api/v1/image/assets/aa9d46e854dd43739b15275aedf24db6/dc55caf3fb61c71fa5f863f88ed7b9c0bc0d502e?placeholderIfAbsent=true"
+              src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=18&h=15&fit=crop"
               alt="Delsu Icon"
               className="w-[18px] h-[15px] object-contain"
             />
