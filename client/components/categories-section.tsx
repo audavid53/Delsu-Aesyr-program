@@ -165,12 +165,13 @@ export function CategoriesSection({ className, onCategoryChange }: CategoriesSec
 
       {/* Categories Container */}
       <div className="relative">
-        <div 
+        <div
           ref={scrollContainer}
-          className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
+          className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto pb-4 scroll-smooth"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
+            WebkitScrollbar: { display: 'none' }
           }}
         >
           {categories.map((category) => (
