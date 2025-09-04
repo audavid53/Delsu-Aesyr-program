@@ -1,106 +1,110 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Search, Bell, Plus, ChevronDown } from "lucide-react";
+import { Search, Bell, Plus } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface HeaderProps {
   className?: string;
 }
 
 const navigationItems = [
-  { id: "home", label: "Home", isActive: true },
-  { id: "products", label: "Products", isActive: false },
-  { id: "events", label: "Events", isActive: false },
-  { id: "announcements", label: "Announcements", isActive: false },
+  { id: "home", label: "Home" },
+  { id: "products", label: "Products" },
+  { id: "events", label: "Events" },
+  { id: "announcements", label: "Announcements" },
 ];
+
+const schools = ["Delsu", "Unilag", "ABU Zaria", "Uniben", "OAU"];
 
 export function Header({ className }: HeaderProps) {
   const [activeNav, setActiveNav] = useState("home");
   const [searchValue, setSearchValue] = useState("");
+  const [school, setSchool] = useState(schools[0]);
 
   return (
-    <header
-      className={cn("bg-white border-b border-gray-200 px-5 py-4", className)}
-    >
-      <div className="flex items-center justify-between gap-8 flex-wrap">
-        {/* Left Section - Delsu Brand */}
-        <div className="flex items-center gap-8">
-          {/* Delsu Brand Button */}
-          <button className="flex items-center gap-2 px-4 py-2.5 border border-[#888F94] rounded-3xl hover:border-gray-400 transition-colors min-h-[38px]">
-            {/* Brand Icon */}
-            <img
-              src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=18&h=15&fit=crop"
-              alt="Delsu Icon"
-              className="w-[18px] h-[15px] object-contain"
-            />
-            <span className="font-gilroy font-semibold text-[#07122A] text-[15px] leading-[1.17] tracking-[-0.3px] whitespace-nowrap">
-              Delsu
-            </span>
-            {/* Dropdown Arrow */}
-            <ChevronDown className="w-[9px] h-[6px] text-[#4D535C] rotate-0" />
-          </button>
+    <header className={cn("bg-white border-b border-gray-200 px-5 py-4", className)}>
+      {/* Three even columns */}
+      <div className="grid grid-cols-3 items-center gap-4">
+        {/* Left: School dropdown */}
+        <div className="flex items-center">
+          <Select value={school} onValueChange={setSchool}>
+            <SelectTrigger className="h-10 w-[180px] rounded-3xl border-[#888F94] text-[#07122A] font-gilroy font-semibold px-4 hover:border-gray-400 transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl">
+              {schools.map((s) => (
+                <SelectItem key={s} value={s} className="cursor-pointer">
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-          {/* Navigation Items - Hidden on smaller screens */}
-          <nav className="hidden md:flex items-center gap-10">
-            {navigationItems.map((item) => (
+        {/* Middle: Navigation */}
+        <nav className="hidden md:flex items-center justify-center gap-8">
+          {navigationItems.map((item) => {
+            const isActive = activeNav === item.id;
+            return (
               <button
                 key={item.id}
                 onClick={() => setActiveNav(item.id)}
                 className={cn(
-                  "relative flex flex-col items-center gap-3 font-medium text-base transition-colors",
-                  activeNav === item.id
-                    ? "text-black"
-                    : "text-[#4D535C] hover:text-gray-700",
+                  "relative flex flex-col items-center gap-2 font-medium text-base transition-all duration-200 ease-out hover:scale-[1.02]",
+                  isActive ? "text-gray-800" : "text-[#4D535C] hover:text-gray-700",
                 )}
               >
-                <span className="font-inter font-medium text-base leading-normal tracking-[-0.32px] whitespace-nowrap">
+                <span className="font-inter font-medium text-base tracking-[-0.32px] whitespace-nowrap">
                   {item.label}
                 </span>
-                {activeNav === item.id && (
-                  <div className="absolute -bottom-4 w-[45px] h-2 bg-gradient-to-r from-[#5F7CFF] to-[#264EF9] rounded-full" />
-                )}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Right Section - Search and Actions */}
-        <div className="flex items-center gap-5">
-          {/* Search Bar */}
-          <div className="relative bg-white rounded-3xl shadow-sm border border-gray-100 min-w-[240px]">
-            <div className="flex items-center px-3 py-5 gap-16">
-              <div className="flex items-center gap-3 flex-1">
-                <Search className="w-4 h-4 text-gray-400 opacity-40" />
-                <input
-                  type="text"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Search anything…"
-                  className="flex-1 text-sm text-black placeholder:text-black placeholder:opacity-40 bg-transparent border-none outline-none font-poppins"
+                <div
+                  className={cn(
+                    "absolute -bottom-4 h-2 rounded-full transition-all duration-300",
+                    isActive
+                      ? "w-[45px] bg-gradient-to-r from-[#5F7CFF] to-[#264EF9]"
+                      : "w-0 bg-transparent",
+                  )}
                 />
-              </div>
+              </button>
+            );
+          })}
+        </nav>
 
-              {/* Search Icon Grid */}
-              <div className="flex items-center gap-1">
-                <div className="w-4 h-4 flex flex-col gap-0.5">
-                  <div className="flex gap-0.5">
-                    <div className="w-1.5 h-1.5 bg-[#3157FA] rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-[#3157FA] rounded-full" />
-                  </div>
-                  <div className="flex gap-0.5">
-                    <div className="w-1.5 h-1.5 bg-[#3157FA] rounded-full" />
-                    <div className="w-1.5 h-1.5 bg-[#3157FA] rounded-full" />
-                  </div>
-                </div>
-              </div>
+        {/* Right: Search, Notification, Create */}
+        <div className="flex items-center justify-end gap-3">
+          {/* Search */}
+          <div className="relative bg-white rounded-3xl shadow-sm border border-gray-100 min-w-[240px] transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/40">
+            <div className="flex items-center px-3 py-3">
+              <Search className="w-4 h-4 text-gray-400 opacity-60" />
+              <input
+                type="text"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder="Search anything…"
+                className="ml-3 flex-1 text-sm text-black placeholder:text-black/40 bg-transparent outline-none font-poppins"
+              />
             </div>
           </div>
 
-          {/* Create Button */}
-          <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-[#5F7CFF] to-[#264EF9] text-white rounded-3xl hover:shadow-lg transition-shadow font-semibold text-sm min-h-[41px]">
+          {/* Notification */}
+          <button
+            aria-label="Notifications"
+            className="relative grid place-items-center w-11 h-11 rounded-full bg-gradient-to-b from-[#5F7CFF] to-[#264EF9] text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+          >
+            <Bell className="w-5 h-5" />
+            <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold rounded-full bg-white text-[#264EF9] shadow-sm">3</span>
+          </button>
+
+          {/* Create */}
+          <button className="flex items-center gap-2 px-5 py-3 bg-gradient-to-b from-[#5F7CFF] to-[#264EF9] text-white rounded-3xl shadow-sm hover:shadow-lg transition-all duration-200 hover:scale-[1.02] font-semibold text-sm">
             <Plus className="w-4 h-4" />
-            <span className="font-gilroy font-semibold text-sm leading-normal tracking-[-0.28px]">
-              Create
-            </span>
+            <span className="font-gilroy">Create</span>
           </button>
         </div>
       </div>
