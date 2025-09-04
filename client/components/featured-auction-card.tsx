@@ -1,66 +1,290 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, ArrowRight, Star, ShieldCheck } from "lucide-react";
 
 interface FeaturedAuctionCardProps {
   className?: string;
 }
 
 const tabs = [
-  { id: "details", label: "Details", isActive: true },
-  { id: "product-info", label: "Product Info", isActive: false },
-  { id: "reviews", label: "Reviews", isActive: false },
+  { id: "details", label: "Details" },
+  { id: "product-info", label: "Product Info" },
+  { id: "reviews", label: "Reviews" },
+];
+
+const carouselItems = [
+  {
+    id: 1,
+    image: "https://api.builder.io/api/v1/image/assets/TEMP/9100d91e54751940f6d3f8c6d9d1f57119f63e12?width=920",
+    title: "Collection of New Monkey",
+    description: "A new collection of nft the adofihdisanklcloah dsfhasoduif dhfladsf dsfhaldsfh",
+    currentBid: "5000",
+    originalPrice: "18.90",
+    endTime: "14H : 17M : 34S",
+    date: "May, 01, 2022",
+    time: "05:00",
+    likeCount: "28+",
+    creator: {
+      name: "Creator",
+      avatar: "https://api.builder.io/api/v1/image/assets/TEMP/7de27c6eff21b700004f827a844ff01f13f4670d?width=90"
+    },
+    avatars: [
+      "https://api.builder.io/api/v1/image/assets/TEMP/1f8906ac7b32b65577e4fbf64a12e27d851f6c7e?width=70",
+      "https://api.builder.io/api/v1/image/assets/TEMP/47b2e567fa99c84da6cd514d6ae3d23d252c77b8?width=70"
+    ]
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=920&h=400&fit=crop",
+    title: "Digital Art Collection",
+    description: "Stunning digital artwork featuring modern abstract designs and vibrant colors",
+    currentBid: "3500",
+    originalPrice: "15.50",
+    endTime: "22H : 45M : 12S",
+    date: "May, 03, 2022",
+    time: "12:30",
+    likeCount: "42+",
+    creator: {
+      name: "ArtistX",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=90&h=90&fit=crop&crop=face"
+    },
+    avatars: [
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=70&h=70&fit=crop&crop=face",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face"
+    ]
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1634973357973-f2ed2657db3c?w=920&h=400&fit=crop",
+    title: "Rare Collectible Series",
+    description: "Limited edition collectibles with unique properties and special characteristics",
+    currentBid: "7200",
+    originalPrice: "25.00",
+    endTime: "08H : 23M : 56S",
+    date: "May, 05, 2022",
+    time: "18:15",
+    likeCount: "15+",
+    creator: {
+      name: "CollectorPro",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=90&h=90&fit=crop&crop=face"
+    },
+    avatars: [
+      "https://images.unsplash.com/photo-1494790108755-2616b612b619?w=70&h=70&fit=crop&crop=face",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=70&h=70&fit=crop&crop=face"
+    ]
+  }
 ];
 
 export function FeaturedAuctionCard({ className }: FeaturedAuctionCardProps) {
   const [activeTab, setActiveTab] = useState("details");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const currentItem = carouselItems[currentIndex];
+
+  // Auto-play carousel
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % carouselItems.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  const handlePrevious = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => (prev - 1 + carouselItems.length) % carouselItems.length);
+  };
+
+  const handleNext = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => (prev + 1) % carouselItems.length);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "details":
+        return (
+          <div className="space-y-6 animate-in fade-in-50 duration-300">
+            {/* Date and Time */}
+            <div className="flex items-center gap-2 text-sm text-[#888F94]">
+              <svg
+                width="16"
+                height="17"
+                viewBox="0 0 16 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="flex-shrink-0"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4 0.246582C3.73478 0.246582 3.48043 0.351939 3.29289 0.539475C3.10536 0.727012 3 0.981366 3 1.24658V2.24658H2C1.46957 2.24658 0.960859 2.4573 0.585786 2.83237C0.210714 3.20744 0 3.71615 0 4.24658V14.2466C0 14.777 0.210714 15.2857 0.585786 15.6608C0.960859 16.0359 1.46957 16.2466 2 16.2466H14C14.5304 16.2466 15.0391 16.0359 15.4142 15.6608C15.7893 15.2857 16 14.777 16 14.2466V4.24658C16 3.71615 15.7893 3.20744 15.4142 2.83237C15.0391 2.4573 14.5304 2.24658 14 2.24658H13V1.24658C13 0.981366 12.8946 0.727012 12.7071 0.539475C12.5196 0.351939 12.2652 0.246582 12 0.246582C11.7348 0.246582 11.4804 0.351939 11.2929 0.539475C11.1054 0.727012 11 0.981366 11 1.24658V2.24658H5V1.24658C5 0.981366 4.89464 0.727012 4.70711 0.539475C4.51957 0.351939 4.26522 0.246582 4 0.246582ZM4 5.24658C3.73478 5.24658 3.48043 5.35194 3.29289 5.53948C3.10536 5.72701 3 5.98137 3 6.24658C3 6.5118 3.10536 6.76615 3.29289 6.95369C3.48043 7.14122 3.73478 7.24658 4 7.24658H12C12.2652 7.24658 12.5196 7.14122 12.7071 6.95369C12.8946 6.76615 13 6.5118 13 6.24658C13 5.98137 12.8946 5.72701 12.7071 5.53948C12.5196 5.35194 12.2652 5.24658 12 5.24658H4Z"
+                  fill="#888F94"
+                />
+              </svg>
+              <span className="font-medium">{currentItem.date}</span>
+              <span className="font-medium">{currentItem.time}</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="font-sora font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight text-black">
+              {currentItem.title}
+            </h1>
+
+            {/* Description */}
+            <p className="text-[#888F94] font-sora text-sm leading-relaxed">
+              {currentItem.description}
+            </p>
+          </div>
+        );
+      
+      case "product-info":
+        return (
+          <div className="space-y-6 animate-in fade-in-50 duration-300">
+            <h3 className="font-sora font-bold text-xl text-black">Product Information</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-[#888F94] text-sm">Category</span>
+                <span className="text-[#07122A] font-medium">Digital Art</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-[#888F94] text-sm">Token Standard</span>
+                <span className="text-[#07122A] font-medium">ERC-721</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-[#888F94] text-sm">Blockchain</span>
+                <span className="text-[#07122A] font-medium">Ethereum</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-[#888F94] text-sm">Edition</span>
+                <span className="text-[#07122A] font-medium">1 of 1</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-[#888F94] text-sm">Royalties</span>
+                <span className="text-[#07122A] font-medium">5%</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
+              <ShieldCheck className="w-4 h-4 text-green-600" />
+              <span className="text-green-700 text-sm font-medium">Verified authentic</span>
+            </div>
+          </div>
+        );
+      
+      case "reviews":
+        return (
+          <div className="space-y-6 animate-in fade-in-50 duration-300">
+            <h3 className="font-sora font-bold text-xl text-black">Reviews & Ratings</h3>
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[#07122A]">4.8</div>
+                <div className="flex items-center gap-1 mt-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <div className="text-xs text-[#888F94] mt-1">124 reviews</div>
+              </div>
+              <div className="flex-1 space-y-1">
+                {[5, 4, 3, 2, 1].map((stars) => (
+                  <div key={stars} className="flex items-center gap-2">
+                    <span className="text-xs text-[#888F94] w-3">{stars}</span>
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-yellow-400" 
+                        style={{ width: `${stars === 5 ? 70 : stars === 4 ? 20 : stars === 3 ? 8 : 2}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="border border-gray-100 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=face" 
+                       className="w-8 h-8 rounded-full" alt="Reviewer" />
+                  <div>
+                    <div className="font-medium text-sm text-[#07122A]">Alex Chen</div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-[#888F94]">Amazing artwork! The quality is exceptional and the details are stunning.</p>
+              </div>
+              <div className="border border-gray-100 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" 
+                       className="w-8 h-8 rounded-full" alt="Reviewer" />
+                  <div>
+                    <div className="font-medium text-sm text-[#07122A]">Sarah Johnson</div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(4)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-[#888F94]">Great value for money. Fast delivery and secure transaction.</p>
+              </div>
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div
-      className={cn("flex gap-6 p-1 bg-white rounded-3xl shadow-lg", className)}
-    >
+    <div className={cn(
+      "flex flex-col lg:flex-row gap-4 lg:gap-6 p-1 bg-white rounded-3xl shadow-[0px_16px_18px_-8px_rgba(7,18,42,0.10)] transition-all duration-300",
+      className
+    )}>
       {/* Left Section - Main Auction Card */}
-      <div className="flex-1 min-w-[460px]">
+      <div className="flex-1 w-full lg:w-auto">
         <div
-          className="relative h-96 rounded-3xl overflow-hidden"
+          className="relative h-80 sm:h-96 lg:h-[416px] rounded-3xl overflow-hidden bg-cover bg-center transition-all duration-500 ease-in-out"
           style={{
-            backgroundImage: `url('https://api.builder.io/api/v1/image/assets/TEMP/9100d91e54751940f6d3f8c6d9d1f57119f63e12?width=920')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundImage: `url('${currentItem.image}')`,
           }}
         >
           {/* Top Section - Avatar Group and Timer */}
-          <div className="absolute top-0 left-0 right-0 flex justify-between items-start p-6">
+          <div className="absolute top-0 left-0 right-0 flex justify-between items-start p-4 lg:p-6">
             {/* Avatar Group */}
             <div className="flex items-center -space-x-3">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/1f8906ac7b32b65577e4fbf64a12e27d851f6c7e?width=70"
-                alt="User"
-                className="w-9 h-9 rounded-full border-2 border-white"
-              />
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/47b2e567fa99c84da6cd514d6ae3d23d252c77b8?width=70"
-                alt="User"
-                className="w-9 h-9 rounded-full border-2 border-white"
-              />
-              <div className="w-9 h-9 rounded-full bg-[#07122A] border-2 border-white flex items-center justify-center">
-                <span className="text-white text-xs font-bold">28+</span>
+              {currentItem.avatars.map((avatar, index) => (
+                <img
+                  key={index}
+                  src={avatar}
+                  alt="User"
+                  className="w-8 h-8 lg:w-9 lg:h-9 rounded-full border-2 border-white transition-transform hover:scale-110 hover:z-10"
+                />
+              ))}
+              <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#07122A] border-2 border-white flex items-center justify-center transition-transform hover:scale-110">
+                <span className="text-white text-xs font-bold">{currentItem.likeCount}</span>
               </div>
             </div>
 
             {/* Auction Timer */}
-            <div className="bg-black/60 backdrop-blur-sm rounded-bl-3xl px-4 py-3 w-[172px]">
+            <div className="bg-black/60 backdrop-blur-sm rounded-bl-3xl px-3 lg:px-4 py-2 lg:py-3 w-36 lg:w-[172px]">
               <div className="text-white text-xs mb-2 font-medium">
                 Auction ends in
               </div>
               <div className="flex items-center gap-2">
-                {/* Clock Icon SVG from Figma */}
                 <svg
                   width="16"
                   height="17"
                   viewBox="0 0 16 17"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                 >
                   <path
                     fillRule="evenodd"
@@ -69,89 +293,49 @@ export function FeaturedAuctionCard({ className }: FeaturedAuctionCardProps) {
                     fill="#E8FE21"
                   />
                 </svg>
-                <span className="text-white text-sm font-semibold">
-                  14H : 17M :34S
+                <span className="text-white text-xs lg:text-sm font-semibold">
+                  {currentItem.endTime}
                 </span>
               </div>
             </div>
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-7">
-            {/* Left Arrow SVG from Figma */}
-            <svg
-              width="20"
-              height="21"
-              viewBox="0 0 20 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="absolute bottom-16 lg:bottom-24 left-1/2 transform -translate-x-1/2 flex items-center gap-4 lg:gap-7">
+            <button 
+              onClick={handlePrevious}
+              className="w-12 h-12 lg:w-16 lg:h-16 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200"
             >
-              <rect
-                width="20"
-                height="20"
-                rx="10"
-                transform="matrix(-1 0 0 1 20 0.246582)"
-                fill="white"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12.707 14.9535C12.8944 14.766 12.9998 14.5117 12.9998 14.2465C12.9998 13.9813 12.8944 13.727 12.707 13.5395L9.41397 10.2465L12.707 6.9535C12.8891 6.7649 12.9899 6.5123 12.9876 6.2501C12.9854 5.9879 12.8802 5.73709 12.6948 5.55168C12.5094 5.36627 12.2586 5.26111 11.9964 5.25883C11.7342 5.25655 11.4816 5.35734 11.293 5.5395L7.29297 9.5395C7.1055 9.72703 7.00018 9.98134 7.00018 10.2465C7.00018 10.5117 7.1055 10.766 7.29297 10.9535L11.293 14.9535C11.4805 15.141 11.7348 15.2463 12 15.2463C12.2651 15.2463 12.5194 15.141 12.707 14.9535Z"
-                fill="black"
-              />
-            </svg>
-            {/* Right Arrow SVG from Figma */}
-            <svg
-              width="20"
-              height="21"
-              viewBox="0 0 20 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6 text-black" />
+            </button>
+            <button 
+              onClick={handleNext}
+              className="w-12 h-12 lg:w-16 lg:h-16 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200"
             >
-              <rect y="0.246582" width="20" height="20" rx="10" fill="white" />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.29279 14.9413C7.10532 14.7538 7 14.4995 7 14.2343C7 13.9691 7.10532 13.7148 7.29279 13.5273L10.5858 10.2343L7.29279 6.94129C7.11063 6.75269 7.00983 6.50009 7.01211 6.23789C7.01439 5.9757 7.11956 5.72488 7.30497 5.53948C7.49038 5.35407 7.74119 5.2489 8.00339 5.24662C8.26558 5.24434 8.51818 5.34514 8.70679 5.52729L12.7068 9.52729C12.8943 9.71482 12.9996 9.96913 12.9996 10.2343C12.9996 10.4995 12.8943 10.7538 12.7068 10.9413L8.70679 14.9413C8.51926 15.1288 8.26495 15.2341 7.99979 15.2341C7.73462 15.2341 7.48031 15.1288 7.29279 14.9413Z"
-                fill="black"
-              />
-            </svg>
+              <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6 text-black" />
+            </button>
           </div>
 
           {/* Bottom Section - Current Bid and Bid Button */}
-          <div className="absolute bottom-0 left-0 right-0 bg-[#07122A] rounded-b-3xl p-5">
-            <div className="flex justify-between items-center">
-              <div className="flex items-start gap-6">
+          <div className="absolute bottom-0 left-0 right-0 bg-[rgba(18,40,89,0.60)] backdrop-blur-sm rounded-b-3xl p-4 lg:p-5">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex items-start gap-4 lg:gap-6">
                 <div>
                   <div className="text-white text-xs mb-1 font-medium">
                     Current Bid
                   </div>
-                  <div className="text-[#E8FE21] font-sora font-bold text-4xl leading-tight">
-                    ₦5000
+                  <div className="text-[#E8FE21] font-sora font-bold text-2xl lg:text-4xl leading-tight">
+                    ₦{currentItem.currentBid}
                   </div>
                 </div>
-                <div className="text-[#ECF0F3] font-sora text-base line-through mt-4">
-                  ₦18.90
+                <div className="text-[#ECF0F3] font-sora text-sm lg:text-base line-through mt-4 lg:mt-6">
+                  ₦{currentItem.originalPrice}
                 </div>
               </div>
 
-              <button className="bg-[#E8FE21] text-[#07122A] px-7 py-3 rounded-3xl font-semibold text-lg flex items-center gap-2 hover:bg-[#E8FE21]/90 transition-colors border border-[#E8FE21]">
+              <button className="bg-[#E8FE21] text-[#07122A] px-4 lg:px-7 py-2 lg:py-3 rounded-3xl font-semibold text-sm lg:text-lg flex items-center gap-2 hover:bg-[#E8FE21]/90 hover:scale-105 transition-all duration-200 border border-[#E8FE21] shadow-lg">
                 <span>Bid Now</span>
-                {/* Arrow Icon SVG from Figma */}
-                <svg
-                  width="8"
-                  height="12"
-                  viewBox="0 0 8 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M0.88392 11.3563C0.680147 11.1525 0.565674 10.8761 0.565674 10.5879C0.565674 10.2996 0.680147 10.0232 0.88392 9.81938L4.46327 6.24003L0.88392 2.66068C0.685922 2.45568 0.576363 2.18111 0.578839 1.89612C0.581316 1.61112 0.69563 1.3385 0.897161 1.13697C1.09869 0.935435 1.37131 0.821121 1.65631 0.818645C1.94131 0.816168 2.21587 0.925728 2.42088 1.12373L6.7687 5.47155C6.97248 5.67539 7.08695 5.95181 7.08695 6.24003C7.08695 6.52825 6.97248 6.80467 6.7687 7.00851L2.42088 11.3563C2.21704 11.5601 1.94062 11.6746 1.6524 11.6746C1.36418 11.6746 1.08775 11.5601 0.88392 11.3563Z"
-                    fill="black"
-                  />
-                </svg>
+                <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4" />
               </button>
             </div>
           </div>
@@ -159,17 +343,17 @@ export function FeaturedAuctionCard({ className }: FeaturedAuctionCardProps) {
       </div>
 
       {/* Right Section - Product Details */}
-      <div className="flex-1 pt-8 max-w-md">
+      <div className="flex-1 pt-4 lg:pt-8 max-w-full lg:max-w-md">
         {/* Product Tabs */}
-        <div className="bg-[#ECF0F3] rounded-3xl p-2 mb-8 inline-flex">
+        <div className="bg-[#ECF0F3] rounded-3xl p-2 mb-6 lg:mb-8 flex overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "px-6 py-2.5 rounded-3xl font-semibold text-sm transition-colors",
+                "px-4 lg:px-6 py-2.5 rounded-3xl font-semibold text-xs lg:text-sm transition-all duration-300 hover:scale-105 whitespace-nowrap",
                 activeTab === tab.id
-                  ? "bg-white text-[#1F8BFF] shadow-sm"
+                  ? "bg-white text-[#1F8BFF] shadow-sm transform scale-105"
                   : "text-[#07122A] hover:text-[#1F8BFF]",
               )}
             >
@@ -178,74 +362,30 @@ export function FeaturedAuctionCard({ className }: FeaturedAuctionCardProps) {
           ))}
         </div>
 
-        {/* Product Information */}
-        <div className="space-y-6 mb-8">
-          {/* Date and Time */}
-          <div className="flex items-center gap-2 text-sm text-[#888F94]">
-            {/* Calendar Icon SVG from Figma */}
-            <svg
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M4 0.246582C3.73478 0.246582 3.48043 0.351939 3.29289 0.539475C3.10536 0.727012 3 0.981366 3 1.24658V2.24658H2C1.46957 2.24658 0.960859 2.4573 0.585786 2.83237C0.210714 3.20744 0 3.71615 0 4.24658V14.2466C0 14.777 0.210714 15.2857 0.585786 15.6608C0.960859 16.0359 1.46957 16.2466 2 16.2466H14C14.5304 16.2466 15.0391 16.0359 15.4142 15.6608C15.7893 15.2857 16 14.777 16 14.2466V4.24658C16 3.71615 15.7893 3.20744 15.4142 2.83237C15.0391 2.4573 14.5304 2.24658 14 2.24658H13V1.24658C13 0.981366 12.8946 0.727012 12.7071 0.539475C12.5196 0.351939 12.2652 0.246582 12 0.246582C11.7348 0.246582 11.4804 0.351939 11.2929 0.539475C11.1054 0.727012 11 0.981366 11 1.24658V2.24658H5V1.24658C5 0.981366 4.89464 0.727012 4.70711 0.539475C4.51957 0.351939 4.26522 0.246582 4 0.246582ZM4 5.24658C3.73478 5.24658 3.48043 5.35194 3.29289 5.53948C3.10536 5.72701 3 5.98137 3 6.24658C3 6.5118 3.10536 6.76615 3.29289 6.95369C3.48043 7.14122 3.73478 7.24658 4 7.24658H12C12.2652 7.24658 12.5196 7.14122 12.7071 6.95369C12.8946 6.76615 13 6.5118 13 6.24658C13 5.98137 12.8946 5.72701 12.7071 5.53948C12.5196 5.35194 12.2652 5.24658 12 5.24658H4Z"
-                fill="#888F94"
-              />
-            </svg>
-            <span className="font-medium">May, 01, 2022</span>
-            <span className="font-medium">05:00</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="font-sora font-bold text-4xl leading-tight text-black">
-            Collection of New Monkey
-          </h1>
-
-          {/* Description */}
-          <p className="text-[#888F94] font-sora text-sm leading-relaxed max-w-xs">
-            A new collecton of nft the adofihdisanklcloah dsfhasoduif dhfladsf
-            dsfhaldsfh
-          </p>
+        {/* Tab Content */}
+        <div className="mb-6 lg:mb-8 min-h-[200px]">
+          {renderTabContent()}
         </div>
 
-        {/* Creator Section */}
-        <div className="flex items-center justify-between pt-8 border-t border-[#ECF0F3]">
+        {/* Creator Section - Always visible */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 lg:pt-8 border-t border-[#ECF0F3] gap-4">
           <div className="flex items-center gap-3">
             <img
-              src="https://api.builder.io/api/v1/image/assets/TEMP/7de27c6eff21b700004f827a844ff01f13f4670d?width=90"
+              src={currentItem.creator.avatar}
               alt="Creator"
-              className="w-11 h-11 rounded-full"
+              className="w-11 h-11 rounded-full transition-transform hover:scale-110"
             />
             <div>
               <div className="text-[#888F94] text-xs font-medium">Creator</div>
               <div className="font-semibold text-lg text-[#07122A]">
-                Creator
+                {currentItem.creator.name}
               </div>
             </div>
           </div>
 
-          <button className="border border-[#888F94] text-[#07122A] px-6 py-2.5 rounded-3xl font-semibold text-lg flex items-center gap-2 hover:border-gray-400 transition-colors">
+          <button className="border border-[#888F94] text-[#07122A] px-4 lg:px-6 py-2.5 rounded-3xl font-semibold text-sm lg:text-lg flex items-center gap-2 hover:border-gray-400 hover:scale-105 transition-all duration-200">
             <span>Contact now</span>
-            {/* Arrow Icon SVG from Figma */}
-            <svg
-              width="6"
-              height="11"
-              viewBox="0 0 6 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M0.293275 9.94764C0.105804 9.76011 0.000488281 9.50581 0.000488281 9.24064C0.000488281 8.97548 0.105804 8.72117 0.293275 8.53364L3.58628 5.24064L0.293275 1.94764C0.111117 1.75904 0.010322 1.50644 0.0126004 1.24424C0.0148788 0.982044 0.120048 0.731231 0.305456 0.545823C0.490864 0.360415 0.741677 0.255246 1.00387 0.252967C1.26607 0.250689 1.51867 0.351484 1.70727 0.533642L5.70727 4.53364C5.89475 4.72117 6.00006 4.97548 6.00006 5.24064C6.00006 5.50581 5.89475 5.76011 5.70727 5.94764L1.70727 9.94764C1.51975 10.1351 1.26544 10.2404 1.00027 10.2404C0.735111 10.2404 0.480803 10.1351 0.293275 9.94764Z"
-                fill="black"
-              />
-            </svg>
+            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4" />
           </button>
         </div>
       </div>
