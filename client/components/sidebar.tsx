@@ -61,7 +61,8 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        "relative flex flex-col bg-white transition-all duration-300 ease-in-out h-screen",
+        // Sticky full-height sidebar with hover expand
+        "sticky top-0 z-20 grid grid-rows-[auto_1fr_auto] bg-white transition-all duration-300 ease-in-out h-screen",
         isHovered ? "w-72" : "w-20",
         className,
       )}
@@ -103,10 +104,10 @@ export function Sidebar({ className }: SidebarProps) {
         )}
       </div>
 
-      {/* Navigation Menu */}
+      {/* Navigation Menu (center section) */}
       <nav
         className={cn(
-          "flex-1 flex flex-col items-center gap-9",
+          "flex flex-col items-center gap-9 overflow-y-auto",
           isHovered ? "px-3" : "px-3",
         )}
       >

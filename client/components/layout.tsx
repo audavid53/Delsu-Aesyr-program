@@ -14,7 +14,7 @@ export function Layout({ children, className }: LayoutProps) {
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">{children}</div>
+      <div className="flex-1 w-full min-w-0 flex flex-col">{children}</div>
     </div>
   );
 }
@@ -31,18 +31,22 @@ export function MainContent({
   className,
 }: MainContentProps) {
   return (
-    <div className={cn("flex-1 flex overflow-hidden", className)}>
-      {/* Center Content */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-full">{children}</div>
-      </main>
+    <div className={cn("flex-1 w-full", className)}>
+      <div className="rounded-3xl bg-primary-grey shadow-sm px-4 sm:px-6 lg:px-8 pb-6">
+        <div className="flex w-full gap-4 sm:gap-6">
+          {/* Center Content */}
+          <main className="flex-1 min-w-0">
+            <div className="max-w-full">{children}</div>
+          </main>
 
-      {/* Right Sidebar - Hidden on smaller screens */}
-      {rightSidebar && (
-        <aside className="hidden xl:block w-[380px] flex-shrink-0 p-3">
-          {rightSidebar}
-        </aside>
-      )}
+          {/* Right Sidebar */}
+          {rightSidebar && (
+            <aside className="hidden xl:block w-[380px] flex-shrink-0 sticky top-6 self-start rounded-3xl shadow-sm overflow-hidden">
+              {rightSidebar}
+            </aside>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
