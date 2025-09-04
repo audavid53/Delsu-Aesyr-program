@@ -28,7 +28,7 @@ export function Header({ className }: HeaderProps) {
   const [school, setSchool] = useState(schools[0]);
 
   return (
-    <header className={cn("bg-white border-b border-gray-200 px-5 py-4", className)}>
+    <header className={cn("bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4", className)}>
       {/* Three even columns */}
       <div className="grid grid-cols-3 items-center gap-4">
         {/* Left: School dropdown */}
