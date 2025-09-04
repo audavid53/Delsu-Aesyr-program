@@ -167,12 +167,7 @@ export function CategoriesSection({ className, onCategoryChange }: CategoriesSec
       <div className="relative">
         <div
           ref={scrollContainer}
-          className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto pb-4 scroll-smooth"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            WebkitScrollbar: { display: 'none' }
-          }}
+          className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
         >
           {categories.map((category) => (
             <CategoryCard
